@@ -1,4 +1,11 @@
-export type UserRole = 'ADMIN' | 'FARMER' | 'WHOLESALER' | 'PROCESSOR' | 'DISTRIBUTOR' | 'RETAILER' | 'PUBLIC';
+export type UserRole =
+  | "ADMIN"
+  | "FARMER"
+  | "WHOLESALER"
+  | "PROCESSOR"
+  | "DISTRIBUTOR"
+  | "RETAILER"
+  | "PUBLIC";
 export interface User {
   id: string;
   name: string;
@@ -6,7 +13,14 @@ export interface User {
   role: UserRole;
   avatar?: string;
 }
-export type BatchStatus = 'PLANTED' | 'HARVESTED' | 'RECEIVED' | 'PROCESSED' | 'SHIPPED' | 'DELIVERED' | 'SOLD';
+export type BatchStatus =
+  | "PLANTED"
+  | "HARVESTED"
+  | "RECEIVED"
+  | "PROCESSED"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "SOLD";
 export interface Product {
   id: string;
   name: string;

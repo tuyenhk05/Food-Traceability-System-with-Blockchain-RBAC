@@ -1,19 +1,34 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Button } from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
-import { Card } from '../../components/ui/Card';
-import { QRScanner } from '../../components/QRScanner';
-import { useAuth } from '../../context/AuthContext';
-import { UserRole } from '../../types';
-import { Sprout, Search, Shield, TrendingUp, Users, CheckCircle, ArrowRight, Leaf, Package, Truck, QrCode, UserCircle, Building2, Factory, Store } from 'lucide-react';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { Button } from "../../components/ui/Button";
+import { Input } from "../../components/ui/Input";
+import { Card } from "../../components/ui/Card";
+import { QRScanner } from "../../components/QRScanner";
+import { useAuth } from "../../context/AuthContext";
+import { UserRole } from "../../types";
+import {
+  Sprout,
+  Search,
+  Shield,
+  TrendingUp,
+  Users,
+  CheckCircle,
+  ArrowRight,
+  Leaf,
+  Package,
+  Truck,
+  QrCode,
+  UserCircle,
+  Building2,
+  Factory,
+  Store,
+} from "lucide-react";
+import PublicHeader from "../../components/layout/PublicHeader";
+
 export function HomePage() {
   const navigate = useNavigate();
-  const {
-    login,
-    isAuthenticated
-  } = useAuth();
-  const [traceCode, setTraceCode] = useState('');
+  const { login, isAuthenticated } = useAuth();
+  const [traceCode, setTraceCode] = useState("");
   const [showScanner, setShowScanner] = useState(false);
   const handleTrace = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,135 +38,133 @@ export function HomePage() {
   };
   const handleScan = (decodedText: string) => {
     setShowScanner(false);
-    const id = decodedText.split('/').pop() || decodedText;
+    const id = decodedText.split("/").pop() || decodedText;
     navigate(`/trace/${id}`);
   };
   const handleRoleLogin = (role: UserRole) => {
     login(role);
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
-  const roles = [{
-    role: 'ADMIN' as UserRole,
-    name: 'Quản trị viên',
-    icon: UserCircle,
-    color: 'bg-purple-100 text-purple-700 hover:bg-purple-200',
-    description: 'Quản lý toàn bộ hệ thống'
-  }, {
-    role: 'FARMER' as UserRole,
-    name: 'Nông dân',
-    icon: Sprout,
-    color: 'bg-green-100 text-green-700 hover:bg-green-200',
-    description: 'Quản lý cây trồng và thu hoạch'
-  }, {
-    role: 'WHOLESALER' as UserRole,
-    name: 'Thu mua',
-    icon: Building2,
-    color: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
-    description: 'Kiểm định và thu mua nông sản'
-  }, {
-    role: 'PROCESSOR' as UserRole,
-    name: 'Chế biến',
-    icon: Factory,
-    color: 'bg-orange-100 text-orange-700 hover:bg-orange-200',
-    description: 'Chế biến và đóng gói sản phẩm'
-  }, {
-    role: 'DISTRIBUTOR' as UserRole,
-    name: 'Vận chuyển',
-    icon: Truck,
-    color: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200',
-    description: 'Vận chuyển và phân phối'
-  }, {
-    role: 'RETAILER' as UserRole,
-    name: 'Bán lẻ',
-    icon: Store,
-    color: 'bg-pink-100 text-pink-700 hover:bg-pink-200',
-    description: 'Bán hàng cho người tiêu dùng'
-  }];
-  const features = [{
-    icon: Shield,
-    title: 'Minh bạch tuyệt đối',
-    description: 'Mọi thông tin được ghi nhận trên blockchain, không thể thay đổi hay xóa bỏ'
-  }, {
-    icon: Search,
-    title: 'Tra cứu dễ dàng',
-    description: 'Chỉ cần quét mã QR hoặc nhập mã lô để biết toàn bộ hành trình sản phẩm'
-  }, {
-    icon: Users,
-    title: 'Kết nối chuỗi cung ứng',
-    description: 'Liên kết nông dân, nhà chế biến, vận chuyển và người tiêu dùng'
-  }, {
-    icon: TrendingUp,
-    title: 'Tăng giá trị sản phẩm',
-    description: 'Sản phẩm có nguồn gốc rõ ràng được định giá cao hơn trên thị trường'
-  }];
-  const steps = [{
-    icon: Leaf,
-    title: 'Nông trại',
-    description: 'Thu hoạch và ghi nhận thông tin ban đầu'
-  }, {
-    icon: Package,
-    title: 'Chế biến',
-    description: 'Quy trình sản xuất được giám sát chặt chẽ'
-  }, {
-    icon: Truck,
-    title: 'Vận chuyển',
-    description: 'Theo dõi điều kiện bảo quản trong suốt hành trình'
-  }, {
-    icon: CheckCircle,
-    title: 'Người tiêu dùng',
-    description: 'Tra cứu đầy đủ thông tin trước khi mua'
-  }];
-  const stats = [{
-    value: '500+',
-    label: 'Nông trại đối tác'
-  }, {
-    value: '10,000+',
-    label: 'Sản phẩm được truy xuất'
-  }, {
-    value: '50,000+',
-    label: 'Người tiêu dùng tin tưởng'
-  }, {
-    value: '100%',
-    label: 'Minh bạch thông tin'
-  }];
-  return <div className="min-h-screen bg-gray-50">
-      <QRScanner isOpen={showScanner} onClose={() => setShowScanner(false)} onScan={handleScan} />
+  const roles = [
+    {
+      role: "ADMIN" as UserRole,
+      name: "Quản trị viên",
+      icon: UserCircle,
+      color: "bg-purple-100 text-purple-700 hover:bg-purple-200",
+      description: "Quản lý toàn bộ hệ thống",
+    },
+    {
+      role: "FARMER" as UserRole,
+      name: "Nông dân",
+      icon: Sprout,
+      color: "bg-green-100 text-green-700 hover:bg-green-200",
+      description: "Quản lý cây trồng và thu hoạch",
+    },
+    {
+      role: "WHOLESALER" as UserRole,
+      name: "Thu mua",
+      icon: Building2,
+      color: "bg-blue-100 text-blue-700 hover:bg-blue-200",
+      description: "Kiểm định và thu mua nông sản",
+    },
+    {
+      role: "PROCESSOR" as UserRole,
+      name: "Chế biến",
+      icon: Factory,
+      color: "bg-orange-100 text-orange-700 hover:bg-orange-200",
+      description: "Chế biến và đóng gói sản phẩm",
+    },
+    {
+      role: "DISTRIBUTOR" as UserRole,
+      name: "Vận chuyển",
+      icon: Truck,
+      color: "bg-yellow-100 text-yellow-700 hover:bg-yellow-200",
+      description: "Vận chuyển và phân phối",
+    },
+    {
+      role: "RETAILER" as UserRole,
+      name: "Bán lẻ",
+      icon: Store,
+      color: "bg-pink-100 text-pink-700 hover:bg-pink-200",
+      description: "Bán hàng cho người tiêu dùng",
+    },
+  ];
+  const features = [
+    {
+      icon: Shield,
+      title: "Minh bạch tuyệt đối",
+      description:
+        "Mọi thông tin được ghi nhận trên blockchain, không thể thay đổi hay xóa bỏ",
+    },
+    {
+      icon: Search,
+      title: "Tra cứu dễ dàng",
+      description:
+        "Chỉ cần quét mã QR hoặc nhập mã lô để biết toàn bộ hành trình sản phẩm",
+    },
+    {
+      icon: Users,
+      title: "Kết nối chuỗi cung ứng",
+      description:
+        "Liên kết nông dân, nhà chế biến, vận chuyển và người tiêu dùng",
+    },
+    {
+      icon: TrendingUp,
+      title: "Tăng giá trị sản phẩm",
+      description:
+        "Sản phẩm có nguồn gốc rõ ràng được định giá cao hơn trên thị trường",
+    },
+  ];
+  const steps = [
+    {
+      icon: Leaf,
+      title: "Nông trại",
+      description: "Thu hoạch và ghi nhận thông tin ban đầu",
+    },
+    {
+      icon: Package,
+      title: "Chế biến",
+      description: "Quy trình sản xuất được giám sát chặt chẽ",
+    },
+    {
+      icon: Truck,
+      title: "Vận chuyển",
+      description: "Theo dõi điều kiện bảo quản trong suốt hành trình",
+    },
+    {
+      icon: CheckCircle,
+      title: "Người tiêu dùng",
+      description: "Tra cứu đầy đủ thông tin trước khi mua",
+    },
+  ];
+  const stats = [
+    {
+      value: "500+",
+      label: "Nông trại đối tác",
+    },
+    {
+      value: "10,000+",
+      label: "Sản phẩm được truy xuất",
+    },
+    {
+      value: "50,000+",
+      label: "Người tiêu dùng tin tưởng",
+    },
+    {
+      value: "100%",
+      label: "Minh bạch thông tin",
+    },
+  ];
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <QRScanner
+        isOpen={showScanner}
+        onClose={() => setShowScanner(false)}
+        onScan={handleScan}
+      />
 
       {/* Header */}
-      <header className="bg-white border-b sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center gap-2">
-              <Sprout className="h-8 w-8 text-green-600" />
-              <span className="text-xl font-bold text-gray-900">FoodTrace</span>
-            </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link to="/" className="text-green-600 font-medium">
-                Trang chủ
-              </Link>
-              <Link to="/news" className="text-gray-600 hover:text-gray-900">
-                Tin tức
-              </Link>
-              <Link to="/about" className="text-gray-600 hover:text-gray-900">
-                Giới thiệu
-              </Link>
-              <Link to="/contact" className="text-gray-600 hover:text-gray-900">
-                Liên hệ
-              </Link>
-              {isAuthenticated ? <Link to="/dashboard">
-                  <Button size="sm">Vào Dashboard</Button>
-                </Link> : <a href="#login">
-                  <Button size="sm">Đăng nhập</Button>
-                </a>}
-            </nav>
-            <button className="md:hidden p-2">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
+      <PublicHeader />
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-green-600 to-green-700 text-white py-20 overflow-hidden">
@@ -175,14 +188,25 @@ export function HomePage() {
               <form onSubmit={handleTrace} className="flex-1 flex gap-2">
                 <div className="flex-1 relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <Input placeholder="Nhập mã lô hàng..." className="pl-10 border-0 focus:ring-0" value={traceCode} onChange={e => setTraceCode(e.target.value)} />
+                  <Input
+                    placeholder="Nhập mã lô hàng..."
+                    className="pl-10 border-0 focus:ring-0"
+                    value={traceCode}
+                    onChange={(e) => setTraceCode(e.target.value)}
+                  />
                 </div>
                 <Button type="submit" size="lg">
                   Tra cứu
                 </Button>
               </form>
               <div className="hidden sm:block w-px bg-gray-200 my-2"></div>
-              <Button type="button" variant="outline" size="lg" className="border-green-600 text-green-600 hover:bg-green-50" onClick={() => setShowScanner(true)}>
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                className="border-green-600 text-green-600 hover:bg-green-50"
+                onClick={() => setShowScanner(true)}
+              >
                 <QrCode className="w-5 h-5 mr-2" />
                 Quét QR
               </Button>
@@ -199,12 +223,14 @@ export function HomePage() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => <div key={index} className="text-center">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
                 <div className="text-4xl font-bold text-green-600 mb-2">
                   {stat.value}
                 </div>
                 <div className="text-gray-600">{stat.label}</div>
-              </div>)}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -222,8 +248,15 @@ export function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {roles.map(roleItem => <Card key={roleItem.role} className="p-6 hover:shadow-xl transition-all cursor-pointer group" onClick={() => handleRoleLogin(roleItem.role)}>
-                <div className={`w-16 h-16 rounded-full ${roleItem.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+            {roles.map((roleItem) => (
+              <Card
+                key={roleItem.role}
+                className="p-6 hover:shadow-xl transition-all cursor-pointer group"
+                onClick={() => handleRoleLogin(roleItem.role)}
+              >
+                <div
+                  className={`w-16 h-16 rounded-full ${roleItem.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
+                >
                   <roleItem.icon className="w-8 h-8" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -236,7 +269,8 @@ export function HomePage() {
                   Đăng nhập
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </div>
-              </Card>)}
+              </Card>
+            ))}
           </div>
 
           <div className="text-center mt-8">
@@ -261,7 +295,11 @@ export function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+            {features.map((feature, index) => (
+              <Card
+                key={index}
+                className="p-6 hover:shadow-lg transition-shadow"
+              >
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
                   <feature.icon className="w-6 h-6 text-green-600" />
                 </div>
@@ -269,7 +307,8 @@ export function HomePage() {
                   {feature.title}
                 </h3>
                 <p className="text-gray-600">{feature.description}</p>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -287,7 +326,8 @@ export function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {steps.map((step, index) => <div key={index} className="relative">
+            {steps.map((step, index) => (
+              <div key={index} className="relative">
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 text-white rounded-full mb-4">
                     <step.icon className="w-8 h-8" />
@@ -297,8 +337,11 @@ export function HomePage() {
                   </h3>
                   <p className="text-gray-600">{step.description}</p>
                 </div>
-                {index < steps.length - 1 && <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-green-200 -translate-x-1/2"></div>}
-              </div>)}
+                {index < steps.length - 1 && (
+                  <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-green-200 -translate-x-1/2"></div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -315,7 +358,11 @@ export function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/contact">
-              <Button size="lg" variant="outline" className="bg-white text-green-600 hover:bg-green-50">
+              <Button
+                size="lg"
+                variant="outline"
+                className="bg-white text-green-600 hover:bg-green-50"
+              >
                 Liên hệ ngay
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
@@ -391,5 +438,6 @@ export function HomePage() {
           </div>
         </div>
       </footer>
-    </div>;
+    </div>
+  );
 }

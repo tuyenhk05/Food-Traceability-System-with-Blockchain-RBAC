@@ -1,87 +1,94 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '../../components/ui/Button';
-import { Card } from '../../components/ui/Card';
-import { Sprout, Shield, Users, Target, Award, TrendingUp, Heart, Zap } from 'lucide-react';
-export function AboutPage() {
-  const values = [{
-    icon: Shield,
-    title: 'Minh bạch',
-    description: 'Cam kết cung cấp thông tin rõ ràng, chính xác về nguồn gốc sản phẩm'
-  }, {
-    icon: Heart,
-    title: 'Trách nhiệm',
-    description: 'Đặt sức khỏe người tiêu dùng và lợi ích nông dân lên hàng đầu'
-  }, {
-    icon: Zap,
-    title: 'Đổi mới',
-    description: 'Ứng dụng công nghệ blockchain tiên tiến vào nông nghiệp Việt Nam'
-  }, {
-    icon: Users,
-    title: 'Hợp tác',
-    description: 'Kết nối toàn bộ chuỗi cung ứng để tạo giá trị bền vững'
-  }];
-  const milestones = [{
-    year: '2022',
-    event: 'Thành lập FoodTrace',
-    description: 'Khởi đầu với tầm nhìn cách mạng hóa chuỗi cung ứng thực phẩm'
-  }, {
-    year: '2023',
-    event: '100+ Nông trại',
-    description: 'Mở rộng mạng lưới đối tác trên toàn quốc'
-  }, {
-    year: '2024',
-    event: '500+ Nông trại',
-    description: 'Trở thành nền tảng truy xuất nguồn gốc hàng đầu Việt Nam'
-  }, {
-    year: '2024',
-    event: 'Giải thưởng Startup',
-    description: 'Vinh danh tại Lễ trao giải Startup Công nghệ Nông nghiệp'
-  }];
-  const team = [{
-    name: 'Nguyễn Văn A',
-    role: 'CEO & Founder',
-    avatar: '👨‍💼'
-  }, {
-    name: 'Trần Thị B',
-    role: 'CTO',
-    avatar: '👩‍💻'
-  }, {
-    name: 'Lê Văn C',
-    role: 'Head of Operations',
-    avatar: '👨‍🔧'
-  }, {
-    name: 'Phạm Thị D',
-    role: 'Head of Marketing',
-    avatar: '👩‍💼'
-  }];
-  return <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center gap-2">
-              <Sprout className="h-8 w-8 text-green-600" />
-              <span className="text-xl font-bold text-gray-900">FoodTrace</span>
-            </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link to="/" className="text-gray-600 hover:text-gray-900">
-                Trang chủ
-              </Link>
-              <Link to="/news" className="text-gray-600 hover:text-gray-900">
-                Tin tức
-              </Link>
-              <Link to="/about" className="text-green-600 font-medium">
-                Giới thiệu
-              </Link>
-              <Link to="/contact" className="text-gray-600 hover:text-gray-900">
-                Liên hệ
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+import React from "react";
+import { Link } from "react-router-dom";
+import { Button } from "../../components/ui/Button";
+import { Card } from "../../components/ui/Card";
+import {
+  Sprout,
+  Shield,
+  Users,
+  Target,
+  Award,
+  TrendingUp,
+  Heart,
+  Zap,
+} from "lucide-react";
+import PublicHeader from "../../components/layout/PublicHeader";
 
+export function AboutPage() {
+  const values = [
+    {
+      icon: Shield,
+      title: "Minh bạch",
+      description:
+        "Cam kết cung cấp thông tin rõ ràng, chính xác về nguồn gốc sản phẩm",
+    },
+    {
+      icon: Heart,
+      title: "Trách nhiệm",
+      description:
+        "Đặt sức khỏe người tiêu dùng và lợi ích nông dân lên hàng đầu",
+    },
+    {
+      icon: Zap,
+      title: "Đổi mới",
+      description:
+        "Ứng dụng công nghệ blockchain tiên tiến vào nông nghiệp Việt Nam",
+    },
+    {
+      icon: Users,
+      title: "Hợp tác",
+      description: "Kết nối toàn bộ chuỗi cung ứng để tạo giá trị bền vững",
+    },
+  ];
+  const milestones = [
+    {
+      year: "2022",
+      event: "Thành lập FoodTrace",
+      description:
+        "Khởi đầu với tầm nhìn cách mạng hóa chuỗi cung ứng thực phẩm",
+    },
+    {
+      year: "2023",
+      event: "100+ Nông trại",
+      description: "Mở rộng mạng lưới đối tác trên toàn quốc",
+    },
+    {
+      year: "2024",
+      event: "500+ Nông trại",
+      description: "Trở thành nền tảng truy xuất nguồn gốc hàng đầu Việt Nam",
+    },
+    {
+      year: "2024",
+      event: "Giải thưởng Startup",
+      description: "Vinh danh tại Lễ trao giải Startup Công nghệ Nông nghiệp",
+    },
+  ];
+  const team = [
+    {
+      name: "Nguyễn Văn A",
+      role: "CEO & Founder",
+      avatar: "👨‍💼",
+    },
+    {
+      name: "Trần Thị B",
+      role: "CTO",
+      avatar: "👩‍💻",
+    },
+    {
+      name: "Lê Văn C",
+      role: "Head of Operations",
+      avatar: "👨‍🔧",
+    },
+    {
+      name: "Phạm Thị D",
+      role: "Head of Marketing",
+      avatar: "👩‍💼",
+    },
+  ];
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <PublicHeader />
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-green-600 to-green-700 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -123,7 +130,11 @@ export function AboutPage() {
             Giá trị cốt lõi
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow">
+            {values.map((value, index) => (
+              <Card
+                key={index}
+                className="p-6 text-center hover:shadow-lg transition-shadow"
+              >
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
                   <value.icon className="w-8 h-8 text-green-600" />
                 </div>
@@ -131,7 +142,8 @@ export function AboutPage() {
                   {value.title}
                 </h3>
                 <p className="text-gray-600">{value.description}</p>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
 
@@ -143,8 +155,18 @@ export function AboutPage() {
           <div className="relative">
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-green-200"></div>
             <div className="space-y-12">
-              {milestones.map((milestone, index) => <div key={index} className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
-                  <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}`}>
+              {milestones.map((milestone, index) => (
+                <div
+                  key={index}
+                  className={`flex items-center ${
+                    index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+                  }`}
+                >
+                  <div
+                    className={`w-1/2 ${
+                      index % 2 === 0 ? "pr-8 text-right" : "pl-8"
+                    }`}
+                  >
                     <Card className="p-6">
                       <div className="text-2xl font-bold text-green-600 mb-2">
                         {milestone.year}
@@ -159,7 +181,8 @@ export function AboutPage() {
                     <div className="w-8 h-8 bg-green-600 rounded-full border-4 border-white shadow-lg"></div>
                   </div>
                   <div className="w-1/2"></div>
-                </div>)}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -170,13 +193,18 @@ export function AboutPage() {
             Đội ngũ lãnh đạo
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow">
+            {team.map((member, index) => (
+              <Card
+                key={index}
+                className="p-6 text-center hover:shadow-lg transition-shadow"
+              >
                 <div className="text-6xl mb-4">{member.avatar}</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-1">
                   {member.name}
                 </h3>
                 <p className="text-gray-600">{member.role}</p>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
 
@@ -286,5 +314,6 @@ export function AboutPage() {
           </div>
         </div>
       </footer>
-    </div>;
+    </div>
+  );
 }
