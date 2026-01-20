@@ -192,7 +192,8 @@ export function HomePage() {
                     placeholder="Nhập mã lô hàng..."
                     className="pl-10 border-0 focus:ring-0"
                     value={traceCode}
-                    onChange={(e) => setTraceCode(e.target.value)}
+                                      onChange={(e) => setTraceCode(e.target.value)}
+                                      style={{ color: "black" }}
                   />
                 </div>
                 <Button type="submit" size="lg">
