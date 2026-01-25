@@ -30,11 +30,7 @@ import { FarmerOverview } from "./pages/dashboard/farmer/FarmerOverview";
 import { BatchCreate } from "./pages/dashboard/farmer/BatchCreate";
 import { HarvestManager } from "./pages/dashboard/farmer/HarvestManager";
 import { HarvestHistory } from "./pages/dashboard/farmer/HarvestHistory";
-
-import { WholesalerOverview } from "./pages/dashboard/wholesaler/WholesalerOverview";
-import { IncomingGoods } from "./pages/dashboard/wholesaler/IncomingGoods";
-import { PurchaseHistory } from "./pages/dashboard/wholesaler/PurchaseHistory";
-import { QualityInspection } from "./pages/dashboard/wholesaler/QualityInspection";
+import { QualityInspection } from "./pages/dashboard/processor/QualityInspection";
 
 import { ProcessorOverview } from "./pages/dashboard/processor/ProcessorOverview";
 import { ProcessingQueue } from "./pages/dashboard/processor/ProcessingQueue";
@@ -64,8 +60,7 @@ const DashboardIndex = () => {
       return <AdminOverview />;
     case "FARMER":
       return <FarmerOverview />;
-    case "WHOLESALER":
-      return <WholesalerOverview />;
+
     case "PROCESSOR":
       return <ProcessorOverview />;
     case "DISTRIBUTOR":
@@ -112,15 +107,11 @@ export function App() {
             <Route path="batch/new" element={<BatchCreate />} />
             <Route path="history" element={<HarvestHistory />} />
 
-            {/* Wholesaler */}
-            <Route path="incoming" element={<IncomingGoods />} />
-            <Route path="purchase-history" element={<PurchaseHistory />} />
-            <Route path="inspection" element={<QualityInspection />} />
-
             {/* Processor */}
             <Route path="queue" element={<ProcessingQueue />} />
             <Route path="orders" element={<ProcessingOrders />} />
             <Route path="shipments-history" element={<ShipmentHistory />} />
+            <Route path="quality-inspection" element={<QualityInspection />} />
 
             {/* Distributor */}
             <Route path="shipments" element={<ShipmentManager />} />
