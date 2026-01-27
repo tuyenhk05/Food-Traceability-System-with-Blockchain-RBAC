@@ -1,150 +1,124 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card } from "../../../components/ui/Card";
 import { Button } from "../../../components/ui/Button";
-import { QrCode, Play, Eye, ClipboardCheck } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Loader2, CheckCircle2, PlayCircle } from "lucide-react";
 
-export function ProcessingQueue() {
-  const navigate = useNavigate();
+const ProcessingQueue = () => {
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
 
-  const queueItems = [
-    {
-      id: "LO-2024-005",
-      material: "Cà chua hữu cơ",
-      qty: "500 kg",
-      grade: "A",
-      supplier: "Nông trại Xanh Đà Lạt",
-      receivedDate: "15/06/2024",
-      priority: "Cao",
-    },
-    {
-      id: "LO-2024-007",
-      material: "Khoai tây",
-      qty: "800 kg",
-      grade: "B",
-      supplier: "Cánh đồng Nắng",
-      receivedDate: "16/06/2024",
-      priority: "Trung bình",
-    },
-    {
-      id: "LO-2024-012",
-      material: "Dâu tây",
-      qty: "200 kg",
-      grade: "A",
-      supplier: "Nông trại Xanh Đà Lạt",
-      receivedDate: "17/06/2024",
-      priority: "Cao",
-    },
-    {
-      id: "LO-2024-013",
-      material: "Bắp cải",
-      qty: "600 kg",
-      grade: "A",
-      supplier: "Vườn Hữu cơ Mộc Châu",
-      receivedDate: "18/06/2024",
-      priority: "Thấp",
-    },
+  const items = [
+    { id: "LOT-101", target: "Nước ép táo" },
+    { id: "LOT-102", target: "Sốt cà chua" },
+    { id: "LOT-103", target: "Mứt dâu" },
+    { id: "LOT-104", target: "Xoài sấy dẻo" },
+    { id: "LOT-105", target: "Trà túi lọc" },
   ];
 
+  useEffect(() => {
+    if (activeId) {
+      const timer = setInterval(() => {
+        setProgress((p) => {
+          if (p >= 100) {
+            clearInterval(timer);
+            localStorage.setItem(`status_${activeId}`, "PROCESSED");
+            setActiveId(null);
+            return 100;
+          }
+          return p + 25;
+        });
+      }, 500);
+      return () => clearInterval(timer);
+    }
+  }, [activeId]);
+
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-end">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Hàng đợi Chế biến
-          </h1>
-          <p className="text-gray-500">
-            Nguyên liệu chờ xử lý (Chỉ cho phép chế biến khi đã đạt kiểm định)
-          </p>
-        </div>
+    <div className="p-8 bg-[#F8F9FA] min-h-screen font-sans">
+      {/* Header thanh mảnh chuẩn Farmer */}
+      <div className="mb-8 border-b border-slate-200 pb-4">
+        <h1 className="text-2xl font-bold text-slate-900">
+          Dây chuyền Chế biến
+        </h1>
+        <p className="text-sm text-slate-500 mt-1">
+          Vận hành máy móc và theo dõi tiến độ sản xuất.
+        </p>
       </div>
 
-      <Card className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase">
-                  Mã lô
-                </th>
-                <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase">
-                  Nguyên liệu / Nhà cung cấp
-                </th>
-                <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase">
-                  Kiểm định
-                </th>
-                <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase">
-                  Hành động
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {queueItems.map((item) => {
-                const inspection = JSON.parse(
-                  localStorage.getItem(`inspection_${item.id}`) || "{}",
-                );
-                const isApproved = inspection.status === "Đạt";
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {items.map((item) => {
+          const status = localStorage.getItem(`status_${item.id}`);
+          const isDone =
+            status === "PROCESSED" ||
+            status === "QC_PASSED" ||
+            status === "SHIPPED";
 
-                return (
-                  <tr key={item.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4">
-                      <div className="font-mono text-sm font-bold text-blue-600">
-                        {item.id}
-                      </div>
-                      <div className="text-xs text-gray-400">
-                        {item.receivedDate}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        {item.material}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {item.supplier}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      {isApproved ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          Đạt (Hạng {inspection.grade})
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                          Chờ kiểm định
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex space-x-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() =>
-                            navigate("/dashboard/quality-inspection")
-                          }
-                        >
-                          <ClipboardCheck className="w-3 h-3 mr-1" /> Kiểm định
-                        </Button>
-                        <Button
-                          size="sm"
-                          disabled={!isApproved}
-                          className={
-                            isApproved
-                              ? "bg-blue-600 hover:bg-blue-700 text-white"
-                              : "bg-gray-300 cursor-not-allowed"
-                          }
-                        >
-                          <Play className="w-3 h-3 mr-1" /> Chế biến
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+          return (
+            <Card
+              key={item.id}
+              className={`p-6 rounded-xl bg-white border border-slate-100 shadow-sm transition-all ${
+                activeId === item.id ? "ring-1 ring-blue-500" : ""
+              }`}
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <p className="text-xs font-semibold text-blue-500 uppercase tracking-wider">
+                    {item.id}
+                  </p>
+                  <h3 className="text-lg font-bold text-slate-800 mt-1">
+                    {item.target}
+                  </h3>
+                </div>
+                {isDone && (
+                  <CheckCircle2 size={20} className="text-emerald-500" />
+                )}
+              </div>
+
+              {activeId === item.id ? (
+                <div className="space-y-3 py-2">
+                  <div className="flex justify-between text-xs font-semibold text-blue-600">
+                    <span className="flex items-center gap-1.5">
+                      <Loader2 size={14} className="animate-spin" /> Đang xử
+                      lý...
+                    </span>
+                    <span>{progress}%</span>
+                  </div>
+                  <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-blue-500 transition-all duration-300"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-6">
+                  <Button
+                    disabled={isDone}
+                    onClick={() => {
+                      setActiveId(item.id);
+                      setProgress(0);
+                    }}
+                    className={`w-full py-3 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 ${
+                      isDone
+                        ? "bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-none cursor-default"
+                        : "bg-[#16A34A] text-white hover:bg-[#15803D] shadow-sm"
+                    }`}
+                  >
+                    {isDone ? (
+                      <>Hoàn tất chế biến</>
+                    ) : (
+                      <>
+                        <PlayCircle size={18} /> Kích hoạt máy
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
-}
+};
+
+export default ProcessingQueue;

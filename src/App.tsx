@@ -30,11 +30,10 @@ import { FarmerOverview } from "./pages/dashboard/farmer/FarmerOverview";
 import { BatchCreate } from "./pages/dashboard/farmer/BatchCreate";
 import { HarvestManager } from "./pages/dashboard/farmer/HarvestManager";
 import { HarvestHistory } from "./pages/dashboard/farmer/HarvestHistory";
-import { QualityInspection } from "./pages/dashboard/processor/QualityInspection";
-
-import { ProcessorOverview } from "./pages/dashboard/processor/ProcessorOverview";
-import { ProcessingQueue } from "./pages/dashboard/processor/ProcessingQueue";
-import { ProcessingOrders } from "./pages/dashboard/processor/ProcessingOrders";
+import ProcessingQueue from "./pages/dashboard/processor/ProcessingQueue";
+import ProcessingOrders from "./pages/dashboard/processor/ProcessingOrders";
+import ProcessorOverview from "./pages/dashboard/processor/ProcessorOverview";
+import QualityInspection from "./pages/dashboard/processor/QualityInspection";
 import { ShipmentHistory } from "./pages/dashboard/processor/ShipmentHistory";
 
 import { DistributorOverview } from "./pages/dashboard/distributor/DistributorOverview";
@@ -46,6 +45,10 @@ import { RetailerOverview } from "./pages/dashboard/retailer/RetailerOverview";
 import { InventoryManager } from "./pages/dashboard/retailer/InventoryManager";
 import { SalesPoint } from "./pages/dashboard/retailer/SalesPoint";
 import { ImportHistory } from "./pages/dashboard/retailer/ImportHistory";
+
+// Inspector pages
+import InspectorOverview from "./pages/dashboard/processor/InspectorOverview";
+import InspectionHistory from "./pages/dashboard/processor/InspectionHistory";
 
 import { BatchDetailPage } from "./pages/dashboard/BatchDetail";
 
@@ -60,9 +63,13 @@ const DashboardIndex = () => {
       return <AdminOverview />;
     case "FARMER":
       return <FarmerOverview />;
-
     case "PROCESSOR":
       return <ProcessorOverview />;
+
+    // 🟢 THÊM CASE NÀY ĐỂ XỬ LÝ LỖI UNKNOWN ROLE
+    case "INSPECTOR":
+      return <InspectorOverview />;
+
     case "DISTRIBUTOR":
       return <DistributorOverview />;
     case "RETAILER":
@@ -107,11 +114,15 @@ export function App() {
             <Route path="batch/new" element={<BatchCreate />} />
             <Route path="history" element={<HarvestHistory />} />
 
-            {/* Processor */}
+            {/* Processor & Inspector Shared Routes */}
             <Route path="queue" element={<ProcessingQueue />} />
             <Route path="orders" element={<ProcessingOrders />} />
             <Route path="shipments-history" element={<ShipmentHistory />} />
+
+            {/* Inspector Specific Routes */}
             <Route path="quality-inspection" element={<QualityInspection />} />
+            <Route path="inspector-overview" element={<InspectorOverview />} />
+            <Route path="inspection-history" element={<InspectionHistory />} />
 
             {/* Distributor */}
             <Route path="shipments" element={<ShipmentManager />} />

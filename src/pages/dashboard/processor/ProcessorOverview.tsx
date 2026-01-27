@@ -1,167 +1,161 @@
 import React from "react";
 import { Card } from "../../../components/ui/Card";
-import { Button } from "../../../components/ui/Button";
+import { useNavigate } from "react-router-dom";
 import {
-  Factory,
-  PackageCheck,
-  Clock,
-  ClipboardCheck,
-  TrendingUp,
+  Activity,
+  Database,
+  RotateCcw,
+  Cpu,
+  CheckCircle,
+  ChevronRight,
+  Plus,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
-export function ProcessorOverview() {
-  const productionLines = [
-    {
-      line: "Dây chuyền A",
-      product: "Sốt Cà chua",
-      batch: "LO-2024-005",
-      progress: 75,
-      status: "Đang chiết rót",
-    },
-    {
-      line: "Dây chuyền B",
-      product: "Táo sấy giòn",
-      batch: "LO-2024-009",
-      progress: 30,
-      status: "Đang sấy",
-    },
-    {
-      line: "Dây chuyền C",
-      product: "Đậu Hà Lan",
-      batch: "LO-2024-011",
-      progress: 90,
-      status: "Đóng gói",
-    },
-  ];
+const ProcessorOverview = () => {
+  const navigate = useNavigate();
+  const ids = ["LOT-101", "LOT-102", "LOT-103", "LOT-104", "LOT-105"];
+
+  const getCount = (status: string) =>
+    ids.filter((id) => localStorage.getItem(`status_${id}`) === status).length;
+
+  const handleResetSystem = () => {
+    if (confirm("Reset toàn bộ hệ thống để bắt đầu Demo mới?")) {
+      ids.forEach((id) => {
+        localStorage.removeItem(`status_${id}`);
+        localStorage.removeItem(`qc_final_${id}`);
+      });
+      window.location.reload();
+    }
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="p-8 bg-[#F8F9FA] min-h-screen font-sans text-slate-800">
+      {/* Header chuẩn ảnh Farmer */}
+      <div className="flex justify-between items-start mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Tổng quan Chế biến
+          <h1 className="text-2xl font-bold text-slate-900">
+            Quản trị chế biến
           </h1>
-          <p className="text-sm text-gray-500">
-            Theo dõi hiệu suất và chất lượng sản xuất
+          <p className="text-sm text-slate-500 mt-1">
+            Giám sát dây chuyền và quy trình sản xuất sản phẩm.
           </p>
         </div>
-        <Link to="/dashboard/quality-inspection">
-          <Button className="bg-orange-600 hover:bg-orange-700 text-white">
-            <Link to="/dashboard/quality-inspection">
-              <Button className="bg-orange-600 ...">
-                <ClipboardCheck className="w-4 h-4 mr-2" />
-                Kiểm định chất lượng
-              </Button>
-            </Link>
-          </Button>
-        </Link>
+        <div className="flex gap-3">
+          <button
+            onClick={handleResetSystem}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-500 rounded-lg text-sm font-medium hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-all shadow-sm"
+          >
+            <RotateCcw size={16} /> Reset
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="p-6 border-l-4 border-l-blue-500">
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-blue-100 rounded-full">
-              <Factory className="w-6 h-6 text-blue-600" />
-            </div>
+      {/* Stats Cards - Layout bo góc và chữ thanh mảnh */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {[
+          {
+            label: "Chờ nấu",
+            val: getCount(""),
+            icon: <Cpu className="text-blue-500" />,
+          },
+          {
+            label: "Chờ kiểm định",
+            val: getCount("PROCESSED"),
+            icon: <Activity className="text-orange-500" />,
+          },
+          {
+            label: "Đã hoàn tất",
+            val: getCount("QC_PASSED") + getCount("SHIPPED"),
+            icon: <CheckCircle className="text-emerald-500" />,
+          },
+        ].map((stat, i) => (
+          <Card
+            key={i}
+            className="p-6 border border-slate-100 shadow-sm flex items-center gap-5 rounded-xl bg-white"
+          >
+            <div className="p-3.5 rounded-full bg-slate-50">{stat.icon}</div>
             <div>
-              <p className="text-xs text-gray-500 uppercase font-bold">
-                Đang chạy
+              <p className="text-sm text-slate-500 font-medium">{stat.label}</p>
+              <p className="text-2xl font-bold text-slate-900 leading-none mt-1">
+                {stat.val}
               </p>
-              <h3 className="text-xl font-bold">3 Dây chuyền</h3>
             </div>
-          </div>
-        </Card>
-        <Card className="p-6 border-l-4 border-l-orange-500">
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-orange-100 rounded-full">
-              <ClipboardCheck className="w-6 h-6 text-orange-600" />
-            </div>
-            <div>
-              <p className="text-xs text-gray-500 uppercase font-bold">
-                Chờ kiểm tra
-              </p>
-              <h3 className="text-xl font-bold text-gray-900">4 Lô hàng</h3>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6 border-l-4 border-l-green-500">
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-green-100 rounded-full">
-              <PackageCheck className="w-6 h-6 text-green-600" />
-            </div>
-            <div>
-              <p className="text-xs text-gray-500 uppercase font-bold">
-                Hoàn thành
-              </p>
-              <h3 className="text-xl font-bold text-gray-900">12 Đơn</h3>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6 border-l-4 border-l-purple-500">
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-purple-100 rounded-full">
-              <TrendingUp className="w-6 h-6 text-purple-600" />
-            </div>
-            <div>
-              <p className="text-xs text-gray-500 uppercase font-bold">
-                Hiệu suất
-              </p>
-              <h3 className="text-xl font-bold text-gray-900">94%</h3>
-            </div>
-          </div>
-        </Card>
+          </Card>
+        ))}
       </div>
 
-      <h2 className="text-lg font-bold text-gray-800">
-        Trạng thái dây chuyền sản xuất
-      </h2>
-      <div className="grid grid-cols-1 gap-4">
-        {productionLines.map((item) => {
-          const inspection = JSON.parse(
-            localStorage.getItem(`inspection_${item.batch}`) || "{}",
-          );
-          return (
-            <Card key={item.line} className="p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="font-bold text-lg">
-                    {item.line} - {item.product}
-                  </h3>
-                  <p className="text-sm text-gray-500 italic">
-                    Mã lô đầu vào: {item.batch}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <span
-                    className={`inline-flex px-3 py-1 rounded-full text-xs font-bold ${
-                      inspection.status === "Đạt"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-gray-600"
-                    }`}
+      {/* Table Section - Đúng font và padding của Nông dân */}
+      <Card className="border border-slate-100 shadow-sm rounded-xl overflow-hidden bg-white text-slate-800">
+        <div className="p-6 border-b border-slate-50 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Database size={18} className="text-slate-400" />
+            <h2 className="text-lg font-bold text-slate-900">
+              Nhật ký vận hành
+            </h2>
+          </div>
+          <button
+            onClick={() => navigate("/dashboard/queue")}
+            className="text-emerald-600 text-sm font-semibold flex items-center gap-1 hover:underline"
+          >
+            Xem dây chuyền <ChevronRight size={16} />
+          </button>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-slate-50/50 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 font-sans">
+              <tr>
+                <th className="px-8 py-4">Mã lô sản xuất</th>
+                <th className="px-8 py-4">Sản phẩm</th>
+                <th className="px-8 py-4">Trạng thái hiện tại</th>
+                <th className="px-8 py-4 text-right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {ids.map((id) => {
+                const status =
+                  localStorage.getItem(`status_${id}`) || "ĐANG CHỜ";
+                const isProcessed = status === "PROCESSED";
+                const isWaiting = status === "ĐANG CHỜ";
+
+                return (
+                  <tr
+                    key={id}
+                    className="hover:bg-slate-50/50 transition-colors"
                   >
-                    {inspection.status === "Đạt"
-                      ? `CHẤT LƯỢNG: HẠNG ${inspection.grade}`
-                      : "CHƯA CÓ DỮ LIỆU QC"}
-                  </span>
-                  <p className="text-xs text-blue-600 mt-1 font-medium">
-                    {item.status}
-                  </p>
-                </div>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div
-                  className="bg-blue-600 h-3 rounded-full transition-all duration-500"
-                  style={{ width: `${item.progress}%` }}
-                ></div>
-              </div>
-              <p className="text-right text-xs font-bold mt-2 text-gray-600">
-                {item.progress}%
-              </p>
-            </Card>
-          );
-        })}
-      </div>
+                    <td className="px-8 py-5 text-sm font-semibold text-slate-700">
+                      {id}
+                    </td>
+                    <td className="px-8 py-5 text-sm text-slate-600 font-medium">
+                      Thành phẩm {id.split("-")[1]}
+                    </td>
+                    <td className="px-8 py-5">
+                      <span
+                        className={`px-3 py-1 rounded-full text-[11px] font-bold ${
+                          isProcessed
+                            ? "bg-orange-50 text-orange-600"
+                            : isWaiting
+                              ? "bg-slate-100 text-slate-500"
+                              : "bg-emerald-50 text-emerald-600"
+                        }`}
+                      >
+                        {status}
+                      </span>
+                    </td>
+                    <td className="px-8 py-5 text-right">
+                      <button className="px-4 py-1.5 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm">
+                        Chi tiết
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </Card>
     </div>
   );
-}
+};
+
+export default ProcessorOverview;

@@ -1,139 +1,124 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card } from "../../../components/ui/Card";
 import { Button } from "../../../components/ui/Button";
-import { Input } from "../../../components/ui/Input";
-import { Search, Eye, Play, CheckCircle, ClipboardCheck } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Truck, ArrowUpRight, Package, ChevronRight } from "lucide-react";
 
-export function ProcessingOrders() {
-  const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const orders = [
-    {
-      id: "PRO-2024-045",
-      batchId: "LO-2024-005",
-      rawMaterial: "Cà chua hữu cơ",
-      outputProduct: "Sốt cà chua",
-      status: "Đang xử lý",
-      priority: "Cao",
-    },
-    {
-      id: "PRO-2024-044",
-      batchId: "LO-2024-009",
-      rawMaterial: "Táo Fuji",
-      outputProduct: "Táo sấy giòn",
-      status: "Hoàn thành",
-      priority: "Trung bình",
-    },
+const ProcessingOrders = () => {
+  const items = [
+    { id: "LOT-101", name: "Nước ép táo" },
+    { id: "LOT-102", name: "Sốt cà chua" },
+    { id: "LOT-103", name: "Mứt dâu" },
+    { id: "LOT-104", name: "Xoài sấy dẻo" },
+    { id: "LOT-105", name: "Trà túi lọc" },
   ];
 
+  const handleShip = (id: string) => {
+    localStorage.setItem(`status_${id}`, "SHIPPED");
+    alert(`🚚 Lô hàng ${id} đã xuất kho thành công!`);
+    window.location.reload();
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">
-          Quản lý Đơn chế biến
-        </h1>
-        <div className="relative w-64">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <Input
-            className="pl-10"
-            placeholder="Tìm mã đơn..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+    <div className="p-8 bg-[#F8F9FA] min-h-screen font-sans text-slate-800">
+      {/* Header thanh mảnh, không nghiêng */}
+      <div className="flex items-center gap-4 border-b border-slate-200 pb-6 mb-8">
+        <div className="p-2.5 bg-blue-600 text-white rounded-xl shadow-sm">
+          <Truck size={24} />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 leading-none">
+            Điều phối xuất kho
+          </h1>
+          <p className="text-sm text-slate-500 mt-1.5 font-medium">
+            Quản lý vận chuyển và bàn giao sản phẩm sau kiểm định.
+          </p>
         </div>
       </div>
 
-      <Card className="overflow-hidden">
+      <Card className="bg-white border border-slate-100 shadow-sm rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-gray-50">
-              <tr className="text-xs font-medium text-gray-500 uppercase">
-                <th className="px-6 py-3">Mã đơn / Lô</th>
-                <th className="px-6 py-3">Sản phẩm đầu ra</th>
-                <th className="px-6 py-3">Chất lượng nguồn</th>
-                <th className="px-6 py-3">Trạng thái</th>
-                <th className="px-6 py-3">Hành động</th>
+            <thead className="bg-slate-50/50 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
+              <tr>
+                <th className="px-8 py-4 px-8">Lô hàng</th>
+                <th className="px-8 py-4">Sản phẩm</th>
+                <th className="px-8 py-4">Trạng thái vận chuyển</th>
+                <th className="px-8 py-4 text-right">Tác vụ xử lý</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
-              {orders.map((order) => {
-                const inspection = JSON.parse(
-                  localStorage.getItem(`inspection_${order.batchId}`) || "{}",
-                );
+            <tbody className="divide-y divide-slate-50">
+              {items.map((item) => {
+                const status = localStorage.getItem(`status_${item.id}`);
+                // Chỉ hiển thị hàng đã qua QC hoặc đã xuất
+                if (!["QC_PASSED", "SHIPPED"].includes(status || ""))
+                  return null;
+
+                const isShipped = status === "SHIPPED";
+
                 return (
-                  <tr key={order.id} className="hover:bg-gray-50/50">
-                    <td className="px-6 py-4">
-                      <div className="font-mono text-sm font-medium">
-                        {order.id}
-                      </div>
-                      <div className="text-xs text-gray-400">
-                        Lô: {order.batchId}
-                      </div>
+                  <tr
+                    key={item.id}
+                    className="hover:bg-slate-50/50 transition-colors group"
+                  >
+                    <td className="px-8 py-5 font-semibold text-blue-600 text-sm">
+                      {item.id}
                     </td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                      {order.outputProduct}
+                    <td className="px-8 py-5 font-medium text-slate-700 text-sm">
+                      {item.name}
                     </td>
-                    <td className="px-6 py-4">
-                      {inspection.status ? (
-                        <div className="flex flex-col">
-                          <span
-                            className={`text-xs font-bold ${inspection.status === "Đạt" ? "text-green-600" : "text-red-600"}`}
-                          >
-                            {inspection.status}
-                          </span>
-                          {inspection.grade && (
-                            <span className="text-[10px] text-gray-500">
-                              Hạng: {inspection.grade}
-                            </span>
-                          )}
-                        </div>
-                      ) : (
-                        <span className="text-xs text-gray-400 italic">
-                          Chưa kiểm định
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
+                    <td className="px-8 py-5">
                       <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          order.status === "Hoàn thành"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-blue-100 text-blue-800"
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold ${
+                          isShipped
+                            ? "bg-slate-100 text-slate-500"
+                            : "bg-emerald-50 text-emerald-600"
                         }`}
                       >
-                        {order.status}
+                        <div
+                          className={`w-1.5 h-1.5 rounded-full ${isShipped ? "bg-slate-400" : "bg-emerald-500"}`}
+                        />
+                        {isShipped ? "ĐÃ RỜI KHO" : "SẴN SÀNG XUẤT"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 flex gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() =>
-                          navigate(`/dashboard/batch/${order.batchId}`)
-                        }
-                      >
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-orange-600"
-                        onClick={() =>
-                          navigate("/dashboard/quality-inspection")
-                        }
-                      >
-                        <ClipboardCheck className="w-4 h-4" />
-                      </Button>
+                    <td className="px-8 py-5 text-right">
+                      {status === "QC_PASSED" ? (
+                        <Button
+                          onClick={() => handleShip(item.id)}
+                          className="bg-[#16A34A] text-white font-bold rounded-lg text-xs px-4 py-2 hover:bg-[15803D] transition-all shadow-sm flex items-center gap-2 ml-auto"
+                        >
+                          <ArrowUpRight size={14} /> Xuất kho ngay
+                        </Button>
+                      ) : (
+                        <span className="text-xs font-semibold text-slate-300 flex items-center justify-end gap-1 cursor-default">
+                          Hoàn tất bàn giao
+                        </span>
+                      )}
                     </td>
                   </tr>
                 );
               })}
+              {/* Trường hợp trống */}
+              {items.every(
+                (item) =>
+                  !["QC_PASSED", "SHIPPED"].includes(
+                    localStorage.getItem(`status_${item.id}`) || "",
+                  ),
+              ) && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="px-8 py-20 text-center text-slate-400 font-medium text-sm"
+                  >
+                    Hiện chưa có lô hàng nào đủ điều kiện xuất kho.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </Card>
     </div>
   );
-}
+};
+
+export default ProcessingOrders;

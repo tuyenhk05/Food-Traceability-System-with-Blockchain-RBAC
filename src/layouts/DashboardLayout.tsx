@@ -72,22 +72,6 @@ const getNavItems = (role: UserRole): SidebarItem[] => {
         },
       ];
 
-    case "WHOLESALER":
-      return [
-        ...common,
-        { name: "Hàng đến", href: "/dashboard/incoming", icon: Truck },
-        {
-          name: "Kiểm định chất lượng",
-          href: "/dashboard/inspection",
-          icon: ClipboardCheck,
-        },
-        {
-          name: "Lịch sử thu mua",
-          href: "/dashboard/purchase-history",
-          icon: History,
-        },
-      ];
-
     case "PROCESSOR":
       return [
         ...common,
@@ -96,6 +80,22 @@ const getNavItems = (role: UserRole): SidebarItem[] => {
         {
           name: "Lịch sử xuất hàng",
           href: "/dashboard/shipments-history",
+          icon: History,
+        },
+      ];
+
+    // 🟢 CHỈ THÊM ĐÚNG ĐOẠN NÀY
+    case "INSPECTOR":
+      return [
+        ...common,
+        {
+          name: "Kiểm định",
+          href: "/dashboard/quality-inspection",
+          icon: ClipboardCheck,
+        },
+        {
+          name: "Lịch sử kiểm định",
+          href: "/dashboard/inspection-history",
           icon: History,
         },
       ];
@@ -155,7 +155,6 @@ export function DashboardLayout() {
   const navItems = getNavItems(user.role);
 
   return (
-    // 🔴 QUAN TRỌNG: overflow-hidden để khóa scroll toàn trang
     <div className="h-screen bg-gray-50 flex overflow-hidden">
       {/* Overlay mobile */}
       {isMobileMenuOpen && (
@@ -278,7 +277,7 @@ export function DashboardLayout() {
           </div>
         </header>
 
-        {/* CONTENT – CHỈ CHỖ NÀY ĐƯỢC SCROLL */}
+        {/* CONTENT */}
         <main className="flex-1 overflow-auto p-4 lg:p-8">
           <Outlet />
         </main>
