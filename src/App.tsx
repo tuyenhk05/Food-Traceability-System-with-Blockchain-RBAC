@@ -51,6 +51,7 @@ import InspectorOverview from "./pages/dashboard/processor/InspectorOverview";
 import InspectionHistory from "./pages/dashboard/processor/InspectionHistory";
 
 import { BatchDetailPage } from "./pages/dashboard/BatchDetail";
+import ShipmentReception from "./pages/dashboard/retailer/ShipmentReception";
 
 /* ===== DASHBOARD INDEX (redirect theo role) ===== */
 const DashboardIndex = () => {
@@ -133,6 +134,10 @@ export function App() {
             <Route path="inventory" element={<InventoryManager />} />
             <Route path="sales" element={<SalesPoint />} />
             <Route path="import-history" element={<ImportHistory />} />
+            <Route
+              path="/dashboard/reception"
+              element={<ShipmentReception />}
+            />
 
             {/* fallback */}
             <Route
